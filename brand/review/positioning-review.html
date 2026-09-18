@@ -1,0 +1,280 @@
+<title>Согласование позиционирования</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=PT+Serif:ital,wght@0,400;0,700;1,400&display=swap">
+<style>
+  :root{
+    --navy:#2D2D87; --navy-soft:#E4E5F4; --red:#EE3224; --red-soft:#FCE6E3;
+    --bg:#F7F7FB; --surface:#FFFFFF; --ink:#1B1B33; --muted:#5F6180; --line:#D9DAEA;
+    --ok:#2D2D87; --ok-bg:#E4E5F4; --talk:#EE3224; --talk-bg:#FCE6E3;
+    --radius:10px; --gutter:16px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --navy:#9A9BE8; --navy-soft:#26264A; --red:#FF6B5E; --red-soft:#4A2320;
+      --bg:#14142A; --surface:#1D1D38; --ink:#EDEDF7; --muted:#A5A7C7; --line:#33345A;
+      --ok:#9A9BE8; --ok-bg:#26264A; --talk:#FF6B5E; --talk-bg:#4A2320;
+    }
+  }
+  :root[data-theme="dark"]{
+    --navy:#9A9BE8; --navy-soft:#26264A; --red:#FF6B5E; --red-soft:#4A2320;
+    --bg:#14142A; --surface:#1D1D38; --ink:#EDEDF7; --muted:#A5A7C7; --line:#33345A;
+    --ok:#9A9BE8; --ok-bg:#26264A; --talk:#FF6B5E; --talk-bg:#4A2320;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:Montserrat,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.5}
+  .wrap{max-width:760px;margin:0 auto;padding-inline:var(--gutter);padding-block:28px 80px}
+  header h1{font-size:clamp(24px,4vw,32px);font-weight:700;line-height:1.15;margin:0 0 6px;letter-spacing:-.01em;text-wrap:balance;color:var(--navy)}
+  header .sub{color:var(--muted);margin:0 0 18px;max-width:62ch}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--muted);margin-bottom:18px}
+  .legend b{color:var(--ink);font-weight:600}
+  .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);margin-bottom:22px}
+  .bar-inner{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+  .count{font-variant-numeric:tabular-nums;font-size:13px;display:flex;gap:12px;flex-wrap:wrap}
+  .count span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+  .dot.ok{background:var(--ok)} .dot.talk{background:var(--talk)} .dot.none{background:var(--line)}
+  .filters{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+  .filters button{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:5px 11px;font:inherit;font-size:12.5px;cursor:pointer}
+  .filters button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+  .save{font-size:12px;color:var(--muted);flex-basis:100%}
+  .save.warn{color:var(--red)}
+  .group{margin-bottom:30px}
+  .group h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 10px}
+  .group .lead{font-family:"PT Serif",Georgia,serif;font-size:15px;color:var(--muted);margin:0 0 12px;font-style:italic}
+  .items{display:grid;gap:10px}
+  .item{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;display:grid;gap:10px;border-left-width:4px}
+  .item[data-status="ok"]{border-left-color:var(--ok)}
+  .item[data-status="talk"]{border-left-color:var(--talk)}
+  .item[data-status="none"]{border-left-color:var(--line)}
+  .item[hidden]{display:none}
+  .text{font-family:"PT Serif",Georgia,serif;font-size:16.5px;line-height:1.5;margin:0}
+  .text q{quotes:"«" "»"}
+  .id{font-size:11px;color:var(--muted);letter-spacing:.06em;font-variant-numeric:tabular-nums}
+  .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+  .choice{display:flex;gap:6px}
+  .choice button{font:inherit;font-size:13px;font-weight:600;border-radius:8px;padding:7px 12px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+  .choice button:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+  .choice button.ok[aria-pressed="true"]{background:var(--ok-bg);border-color:var(--ok);color:var(--ok)}
+  .choice button.talk[aria-pressed="true"]{background:var(--talk-bg);border-color:var(--talk);color:var(--talk)}
+  .comment{flex:1 1 220px;min-width:0}
+  .comment input{width:100%;font:inherit;font-size:13.5px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+  .comment input::placeholder{color:var(--muted)}
+  .comment input:focus-visible{outline:2px solid var(--navy);outline-offset:1px}
+  footer{margin-top:36px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
+  @media (prefers-reduced-motion:no-preference){.item{transition:border-color .15s}}
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Позиционирование: что утверждаем, что обсуждаем</h1>
+    <p class="sub">Школа английского языка Ольги Карпенко. Каждое утверждение из документа <em>brand/01-positioning.md</em> вынесено отдельной строкой. Отметьте <b>Согласен</b>, если подписываетесь под формулировкой как есть. <b>Обсудить</b> — если есть сомнение или правка; комментарий не обязателен, но помогает.</p>
+    <div class="legend">
+      <span><b>Согласен</b> — берём в работу без изменений</span>
+      <span><b>Обсудить</b> — разберём отдельно</span>
+      <span>Не отмечено — ещё не смотрели</span>
+    </div>
+  </header>
+
+  <div class="bar"><div class="bar-inner">
+    <div class="count" id="count"></div>
+    <div class="filters" role="group" aria-label="Фильтр">
+      <button type="button" data-f="all" aria-pressed="true">Все</button>
+      <button type="button" data-f="none" aria-pressed="false">Не отмечено</button>
+      <button type="button" data-f="ok" aria-pressed="false">Согласен</button>
+      <button type="button" data-f="talk" aria-pressed="false">Обсудить</button>
+    </div>
+    <div class="save" id="save">Загрузка сохранённых отметок…</div>
+  </div></div>
+
+  <main id="groups"></main>
+
+  <footer>Отметки сохраняются автоматически и видны Гоше в рабочей сессии. Версия документа: позиционирование v1 от 18.09.2026.</footer>
+</div>
+
+<script>
+const GROUPS = [
+  { key:"A", title:"Решения и допущения", lead:"То, на чём построен весь документ. Если здесь «обсудить» — остальное тоже сдвинется.", items:[
+    ["A1","Имя бренда — <q>Школа английского языка Ольги Карпенко</q>. Fair Winds остаётся в домене, юрлице и истории до отдельного решения по архитектуре бренда."],
+    ["A2","Экзаменационного продукта сейчас нет. Экзамены — вехи маршрута, а не обещание. Если продукт появится к Новому году 2027, позиционирование дополняется, не переписывается."],
+    ["A3","Ядро обещания — <q>свободный английский для жизни</q>. <q>Второй родной язык</q> — не конкурент, а расшифровка: объясняет, откуда берётся свобода."],
+    ["A4","В коммуникации говорим с родителями детей 6–10 лет. Подростки 11–15 остаются в школе, но не в фокусе рекламы и первого экрана."],
+  ]},
+  { key:"B", title:"01 — Категория", lead:"На какой полке нас находит родитель и как мы эту полку переопределяем.", items:[
+    ["B1","Родитель сравнивает нас с пятью вариантами: репетитор рядом с домом, крупная онлайн-платформа, маленькая онлайн-школа с именем, офлайн-курсы в городе, <q>ничего, в школе научат</q>."],
+    ["B2","Мы — школа, а не курсы и не репетитор. У курса есть конец, репетитор решает задачу к контрольной, а школа — место, где ребёнок растёт годами. 77 % продлений подтверждают, что семьи так нас и используют."],
+    ["B3","Категория, которую занимаем: <q>авторская онлайн-школа английского, где язык осваивают как родной</q>."],
+    ["B4","С именем Ольги рамка <q>школа</q> усиливается: как школа у художника или музыканта — авторский метод плюс ученики, которые его несут. Этим не может быть ни платформа, ни репетитор."],
+  ]},
+  { key:"C", title:"02 — Карта конкурентов", lead:"Две оси и место каждого игрока. Проверьте, совпадает ли с тем, что вы слышите на консультациях.", items:[
+    ["C1","Ось 1 — кто отвечает за результат: платформа-конвейер или автор с именем. Ось 2 — зачем учат язык: для оценок и экзаменов или для речи и жизни."],
+    ["C2","Skysmart / Skyeng Kids — платформа для школьной успеваемости. Сильны масштабом и рекламой, уязвимы как <q>конвейер</q>: ребёнок — строка в CRM, текучка учителей."],
+    ["C3","Novakid — платформа для говорения через носителей и игру, 4–12 лет. Уязвимы: индивидуальный формат дороже, носитель не всегда понимает русскоязычного новичка, дети перерастают к 11–12."],
+    ["C4","Офлайн-сети (BKC, Alibra, EF, Language Link) — институция плюс Cambridge-экзамены. Уязвимы: возить, жёсткое расписание, учебник и грамматика — ровно то, против чего мы."],
+    ["C5","Репетитор — человек плюс оценки. Даёт доверие и гибкость, но натаскивает к контрольной, не система, ребёнок не говорит."],
+    ["C6","Ближайший сосед — авторские онлайн-школы одного преподавателя (Татьяна Фанштейн, Goodwill Land и подобные). У них нет команды, лестницы уровней до CAE и методики, которой обучают других."],
+    ["C7","Наша незанятая территория: личное как у репетитора, системное как у платформы, и без натаскивания как ни у кого из крупных."],
+  ]},
+  { key:"D", title:"03 — Территория", lead:"Идея, аудитория и ров. Три предложения, которые должны остаться, даже если всё остальное перепишем.", items:[
+    ["D1","Пространство: английский, который ребёнок не учит, а осваивает как родной, и школьные оценки приходят сами, как побочный эффект."],
+    ["D2","Аудитория, которую делаем своей: мама ребёнка 6–10 лет, которая сама <q>так и не выучила английский</q> школьным методом и не хочет повторять это с ребёнком. Ей нужен не результат к контрольной, а чтобы ребёнок заговорил и полюбил язык."],
+    ["D3","Ров: методика i5 learning — система, отточенная за 20 лет и переданная команде (<q>мы учим учить</q>). Платформа не скопирует без перестройки педагогики, одиночка не воспроизведёт школу с шестью педагогами и маршрутом до CAE."],
+    ["D4","Часть рва — публичные отказы (оценки, зубрёжка, <q>выучим за 3 месяца</q>). Крупный игрок отказаться не может: на этом стоит его воронка."],
+  ]},
+  { key:"E", title:"04 — Формулировки", lead:"Три версии одного и того же. Согласие здесь — согласие с текстом дословно.", items:[
+    ["E1","<b>Базовая:</b> Для родителей детей 6–10 лет, которые хотят, чтобы ребёнок заговорил по-английски и полюбил язык, а не зубрил ради оценок, Школа английского языка Ольги Карпенко — авторская онлайн-школа, где английский осваивают как родной: без перевода, без заучивания, в мини-группах до 6 детей, — потому что методика i5 learning отточена за 20 лет практики, ей обучен каждый преподаватель школы, и 77 % семей остаются на следующий год."],
+    ["E2","<b>Стратегическая (внутренняя):</b> позиция <q>авторская школа, а не курсы и не репетитор</q>. Выигрываем у платформ личным отношением и педагогикой, у репетиторов и школ-одиночек — системой и маршрутом до CAE, у всех — публичным отказом от натаскивания на оценки."],
+    ["E3","<b>Человеческая (для сайта и консультации):</b> Мы учим английскому так, как ребёнок выучил русский: сначала слушает, потом говорит, а читает и пишет уже тем, что понимает. На уроке ни слова по-русски и ни одного списка слов на зубрёжку. Через несколько занятий ребёнок начинает говорить, а через год вы забываете, что английский был проблемой. Оценки подтянутся сами, мы этого даже не обещаем отдельно."],
+    ["E4","Мы сознательно отдаём три сегмента: <q>нужен результат к контрольной</q>, <q>нужно индивидуально</q>, <q>нужно дёшево</q>."],
+  ]},
+  { key:"F", title:"05 — Доказательства", lead:"Порядок — по силе для мамы ребёнка 6–10 лет.", items:[
+    ["F1","Главное доказательство — семьи остаются: 77 % продлили обучение, 11 семей привели второго ребёнка (20 % базы — братья и сёстры)."],
+    ["F2","Методика с именем и историей: i5 learning, автор Ольга Карпенко, 20+ лет практики, школа с 2007 года, открытые занятия с демонстрацией результата."],
+    ["F3","Команда учит по методике, а не <q>по-своему</q>: отбор из десятков кандидатов, курс i5, уровень C1, профильное образование, TKT/CAE. Это ответ на страх <q>а если не Ольга, то кто?</q>."],
+    ["F4","Маршрут на годы, не курс: лестница Pre-Starters → CAE внутри одной школы. Экзамены здесь — вехи, не цель."],
+    ["F5","Формат под методику, а не под экономику: мини-группы до 6 детей. Лицензия № Л035-01298-77/01720183 — вычет 13 % и маткапитал."],
+    ["F6","Чтобы доказательства заработали публично, не хватает: записи реального урока, полных текстов отзывов (сейчас картинки), видимого прогресса ребёнка через месяц и через год."],
+  ]},
+  { key:"G", title:"06 — Чем школа отказывается быть", lead:"Границы, которые сайт уже провёл. Здесь они заострены.", items:[
+    ["G1","Не для тех, кому нужен результат к контрольной. Не делаем домашку за ребёнка и не готовим к тесту за неделю; для этого есть репетитор, и мы честно об этом говорим."],
+    ["G2","Никогда не конкурируем по цене. Конкурируем соотношением результата к нервам и деньгам родителя."],
+    ["G3","Индивидуальные занятия — не основной продукт. Мини-группа — часть методики, а не компромисс. Уход <q>на индивидуальные</q> — неподходящий клиент, а не поражение."],
+    ["G4","Не продаём <q>свободный английский за 3 месяца</q>, носителей и геймификацию ради геймификации. Не пугаем <q>ребёнок отстанет</q>, не торгуемся скидками."],
+    ["G5","Не учим по учебнику через грамматику и транскрипцию. Манифест отказов из Notion и сайта остаётся в силе целиком."],
+  ]},
+  { key:"H", title:"07 — В одном предложении", lead:"Самая короткая версия позиции.", items:[
+    ["H1","<q>Авторская онлайн-школа, где дети 6–10 лет осваивают английский как родной, без перевода и зубрёжки, по методике i5 learning Ольги Карпенко, а оценки в школе приходят бонусом.</q>"],
+    ["H2","Для шапки и первого экрана остаётся то, что уже стоит на сайте: <q>Свободный английский для жизни, а успеваемость в школе — бонусом</q>."],
+  ]},
+  { key:"R", title:"Красные флаги", lead:"Риски документа. Согласие означает: риск признан и с ним будем работать так, как написано.", items:[
+    ["R1","<q>Свободный английский для жизни</q> само по себе не отличие — так может сказать половина рынка. В коммуникации обещание никогда не ходит без метода: <q>как родной</q>, <q>без перевода</q>, i5 learning."],
+    ["R2","Личный бренд — риск <q>школа = один человек</q>. Команда, обученная методике, должна быть видна на сайте и в рекламе. Отдельно нужна архитектура бренда: Школа Ольги Карпенко, i5 learning, Fair Winds, псевдонимы преподавателей."],
+    ["R3","Сайт обещает 6–15, позиционирование говорит с мамой 6–10. Это не конфликт, если подростки — ученики, выросшие внутри школы, а не отдельный набор. Но вопрос, куда деть базу Movers/KET/PET, приносящую основные деньги, открыт."],
+    ["R4","Лестница до CAE против <q>не для экзаменов</q> разрешается только формулой: экзамены — вехи, не цель, и наши дети их сдают, потому что владеют языком."],
+    ["R5","Двойное имя на сайте (Школа Ольги Карпенко в шапке, Fair Winds в домене и <q>О нас</q>) нужно довести до конца или осознанно оформить как <q>Школа Ольги Карпенко (Fair Winds)</q>."],
+    ["R6","Данных о восприятии нет: ни одного интервью с родителем о том, как он описывает школу другим и с кем сравнивал. Самая дешёвая проверка — пять звонков мамам действующих учеников."],
+    ["R7","Амбиция на 5 лет не сформулирована. Без неё позиционирование защищает то, что есть, а не ведёт туда, куда школа хочет."],
+  ]},
+];
+
+const DOC_PATH = "review/positioning-v1";
+const LS_KEY = "positioning-review-v1";
+let state = { items: {} };           // id -> {status:'ok'|'talk'|'none', comment:''}
+let filter = "all";
+let db = null, saving = null, pending = false, dbUnavailable = false;
+
+const $ = s => document.querySelector(s);
+const groupsEl = $("#groups"), countEl = $("#count"), saveEl = $("#save");
+
+function get(id){ return state.items[id] || { status:"none", comment:"" }; }
+
+function render(){
+  groupsEl.innerHTML = "";
+  for (const g of GROUPS){
+    const sec = document.createElement("section"); sec.className = "group";
+    sec.innerHTML = `<h2>${g.title}</h2><p class="lead">${g.lead}</p><div class="items"></div>`;
+    const list = sec.querySelector(".items");
+    for (const [id, html] of g.items){
+      const st = get(id);
+      const el = document.createElement("article");
+      el.className = "item"; el.dataset.status = st.status; el.dataset.id = id;
+      el.hidden = filter !== "all" && st.status !== filter;
+      el.innerHTML = `
+        <div class="id">${id}</div>
+        <p class="text">${html}</p>
+        <div class="row">
+          <div class="choice" role="group" aria-label="Решение по ${id}">
+            <button type="button" class="ok" data-set="ok" aria-pressed="${st.status==="ok"}">✓ Согласен</button>
+            <button type="button" class="talk" data-set="talk" aria-pressed="${st.status==="talk"}">? Обсудить</button>
+          </div>
+          <label class="comment"><span hidden>Комментарий к ${id}</span>
+            <input id="c-${id}" type="text" placeholder="Комментарий (по желанию)" value="${escapeAttr(st.comment)}" autocomplete="off">
+          </label>
+        </div>`;
+      list.appendChild(el);
+    }
+    groupsEl.appendChild(sec);
+  }
+  renderCount();
+}
+function escapeAttr(s){ return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;"); }
+
+function renderCount(){
+  const all = GROUPS.flatMap(g => g.items.map(i => i[0]));
+  const n = { ok:0, talk:0, none:0 };
+  for (const id of all) n[get(id).status]++;
+  countEl.innerHTML = `<span><i class="dot ok"></i>Согласен ${n.ok}</span><span><i class="dot talk"></i>Обсудить ${n.talk}</span><span><i class="dot none"></i>Не отмечено ${n.none}</span><span>из ${all.length}</span>`;
+}
+
+function setStatus(id, status){
+  const cur = get(id);
+  const next = cur.status === status ? "none" : status;   // second click clears
+  state.items[id] = { ...cur, status: next, updatedAt: new Date().toISOString() };
+  const el = groupsEl.querySelector(`[data-id="${id}"]`);
+  if (el){
+    el.dataset.status = next;
+    el.querySelector('[data-set="ok"]').setAttribute("aria-pressed", next==="ok");
+    el.querySelector('[data-set="talk"]').setAttribute("aria-pressed", next==="talk");
+    if (filter !== "all" && next !== filter) el.hidden = true;
+  }
+  renderCount(); schedule();
+}
+function setComment(id, comment){
+  const cur = get(id);
+  if (cur.comment === comment) return;
+  state.items[id] = { ...cur, comment, updatedAt: new Date().toISOString() };
+  schedule();
+}
+
+// Save: one write at a time, coalesced.
+let timer = null;
+function schedule(){
+  try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e){}
+  clearTimeout(timer); timer = setTimeout(flush, 700);
+  saveEl.textContent = "Сохраняю…"; saveEl.className = "save";
+}
+async function flush(){
+  if (!db){ saveEl.textContent = dbUnavailable ? "Сохранение недоступно: отметки останутся только в этой вкладке." : "Сохраняю…"; if (dbUnavailable) saveEl.className="save warn"; return; }
+  if (saving){ pending = true; return; }
+  saving = db.doc(DOC_PATH).set({ items: state.items, updatedAt: new Date().toISOString(), version: "positioning-v1" });
+  try { await saving; saveEl.textContent = "Сохранено " + new Date().toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"}); saveEl.className="save"; }
+  catch(e){ saveEl.textContent = "Не удалось сохранить (" + (e && e.code || "ошибка") + "). Отметки остались в этой вкладке."; saveEl.className="save warn"; }
+  finally { saving = null; if (pending){ pending = false; flush(); } }
+}
+
+groupsEl.addEventListener("click", e => {
+  const b = e.target.closest("button[data-set]"); if (!b) return;
+  setStatus(b.closest(".item").dataset.id, b.dataset.set);
+});
+groupsEl.addEventListener("input", e => {
+  const inp = e.target.closest("input[id^='c-']"); if (!inp) return;
+  setComment(inp.closest(".item").dataset.id, inp.value);
+});
+$(".filters").addEventListener("click", e => {
+  const b = e.target.closest("button[data-f]"); if (!b) return;
+  filter = b.dataset.f;
+  for (const x of $(".filters").children) x.setAttribute("aria-pressed", x === b);
+  for (const el of groupsEl.querySelectorAll(".item")) el.hidden = filter !== "all" && el.dataset.status !== filter;
+});
+
+// Boot: render immediately from local copy, then reconcile with db.
+try { const raw = localStorage.getItem(LS_KEY); if (raw) state = JSON.parse(raw) || state; if (!state.items) state.items = {}; } catch(e){}
+render();
+
+(async () => {
+  db = window.claude && window.claude.use ? await window.claude.use("db") : null;
+  if (!db){ dbUnavailable = true; saveEl.textContent = "Сохранение недоступно: отметки останутся только в этой вкладке."; saveEl.className = "save warn"; return; }
+  try {
+    const snap = await db.doc(DOC_PATH).get();
+    if (snap.exists){
+      const remote = snap.data();
+      const merged = { ...(remote.items||{}) };
+      for (const [id, v] of Object.entries(state.items||{})){       // local wins only if newer
+        if (!merged[id] || (v.updatedAt||"") > (merged[id].updatedAt||"")) merged[id] = v;
+      }
+      state.items = merged; render();
+      saveEl.textContent = "Загружено сохранённое" + (remote.updatedAt ? " от " + new Date(remote.updatedAt).toLocaleString("ru-RU",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}) : "");
+    } else {
+      saveEl.textContent = "Ничего ещё не отмечено. Отметки сохраняются автоматически.";
+    }
+  } catch(e){ saveEl.textContent = "Не удалось загрузить сохранённое (" + (e && e.code || "ошибка") + ")."; saveEl.className = "save warn"; }
+})();
+</script>
