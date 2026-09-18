@@ -4,34 +4,40 @@
   :root{
     --navy:#2D2D87; --navy-soft:#E4E5F4; --red:#EE3224; --red-soft:#FCE6E3;
     --bg:#F7F7FB; --surface:#FFFFFF; --ink:#1B1B33; --muted:#5F6180; --line:#D9DAEA;
-    --ok:#2D2D87; --ok-bg:#E4E5F4; --talk:#EE3224; --talk-bg:#FCE6E3;
+    --ok:#2D2D87; --ok-bg:#E4E5F4; --talk:#EE3224; --talk-bg:#FCE6E3; --agree:#1F7A4D; --agree-bg:#E3F3EA;
     --radius:10px; --gutter:16px;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
       --navy:#9A9BE8; --navy-soft:#26264A; --red:#FF6B5E; --red-soft:#4A2320;
       --bg:#14142A; --surface:#1D1D38; --ink:#EDEDF7; --muted:#A5A7C7; --line:#33345A;
-      --ok:#9A9BE8; --ok-bg:#26264A; --talk:#FF6B5E; --talk-bg:#4A2320;
+      --ok:#9A9BE8; --ok-bg:#26264A; --talk:#FF6B5E; --talk-bg:#4A2320; --agree:#6FCF97; --agree-bg:#1E3A2B;
     }
   }
   :root[data-theme="dark"]{
     --navy:#9A9BE8; --navy-soft:#26264A; --red:#FF6B5E; --red-soft:#4A2320;
     --bg:#14142A; --surface:#1D1D38; --ink:#EDEDF7; --muted:#A5A7C7; --line:#33345A;
-    --ok:#9A9BE8; --ok-bg:#26264A; --talk:#FF6B5E; --talk-bg:#4A2320;
+    --ok:#9A9BE8; --ok-bg:#26264A; --talk:#FF6B5E; --talk-bg:#4A2320; --agree:#6FCF97; --agree-bg:#1E3A2B;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);font-family:Montserrat,"Helvetica Neue",Arial,sans-serif;font-size:15px;line-height:1.5}
-  .wrap{max-width:760px;margin:0 auto;padding-inline:var(--gutter);padding-block:28px 80px}
+  .wrap{max-width:780px;margin:0 auto;padding-inline:var(--gutter);padding-block:28px 80px}
   header h1{font-size:clamp(24px,4vw,32px);font-weight:700;line-height:1.15;margin:0 0 6px;letter-spacing:-.01em;text-wrap:balance;color:var(--navy)}
-  header .sub{color:var(--muted);margin:0 0 18px;max-width:62ch}
-  .legend{display:flex;flex-wrap:wrap;gap:8px 18px;font-size:13px;color:var(--muted);margin-bottom:18px}
+  header .sub{color:var(--muted);margin:0 0 16px;max-width:64ch}
+  .who{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-bottom:16px}
+  .who .lbl{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .who button{font:inherit;font-size:14px;font-weight:600;border-radius:999px;padding:7px 16px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer}
+  .who button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
+  .who button:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+  .who .hint{flex-basis:100%;font-size:12.5px;color:var(--muted)}
+  .legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13px;color:var(--muted);margin-bottom:14px}
   .legend b{color:var(--ink);font-weight:600}
   .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px;border-bottom:1px solid var(--line);margin-bottom:22px}
   .bar-inner{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
   .count{font-variant-numeric:tabular-nums;font-size:13px;display:flex;gap:12px;flex-wrap:wrap}
   .count span{display:inline-flex;align-items:center;gap:6px}
   .dot{width:10px;height:10px;border-radius:50%;display:inline-block}
-  .dot.ok{background:var(--ok)} .dot.talk{background:var(--talk)} .dot.none{background:var(--line)}
+  .dot.ok{background:var(--ok)} .dot.talk{background:var(--talk)} .dot.none{background:var(--line)} .dot.agree{background:var(--agree)}
   .filters{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
   .filters button{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:5px 11px;font:inherit;font-size:12.5px;cursor:pointer}
   .filters button[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:#fff}
@@ -48,7 +54,14 @@
   .item[hidden]{display:none}
   .text{font-family:"PT Serif",Georgia,serif;font-size:16.5px;line-height:1.5;margin:0}
   .text q{quotes:"«" "»"}
+  .meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 12px;align-items:center}
   .id{font-size:11px;color:var(--muted);letter-spacing:.06em;font-variant-numeric:tabular-nums}
+  .others{display:flex;flex-wrap:wrap;gap:6px}
+  .pill{font-size:11.5px;font-weight:600;border-radius:999px;padding:2px 9px;border:1px solid var(--line);color:var(--muted);display:inline-flex;align-items:center;gap:5px;background:var(--bg)}
+  .pill.ok{color:var(--ok);border-color:var(--ok);background:var(--ok-bg)}
+  .pill.talk{color:var(--talk);border-color:var(--talk);background:var(--talk-bg)}
+  .pill.all{color:var(--agree);border-color:var(--agree);background:var(--agree-bg)}
+  .pill[title]{cursor:help}
   .row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
   .choice{display:flex;gap:6px}
   .choice button{font:inherit;font-size:13px;font-weight:600;border-radius:8px;padding:7px 12px;border:1px solid var(--line);background:transparent;color:var(--muted);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
@@ -59,18 +72,26 @@
   .comment input{width:100%;font:inherit;font-size:13.5px;padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
   .comment input::placeholder{color:var(--muted)}
   .comment input:focus-visible{outline:2px solid var(--navy);outline-offset:1px}
+  .ocomment{font-size:12.5px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px;display:grid;gap:3px}
+  .ocomment b{color:var(--ink);font-weight:600}
   footer{margin-top:36px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);padding-top:16px}
-  @media (prefers-reduced-motion:no-preference){.item{transition:border-color .15s}}
 </style>
 
 <div class="wrap">
   <header>
-    <h1>Позиционирование: что утверждаем, что обсуждаем</h1>
-    <p class="sub">Школа английского языка Ольги Карпенко. Каждое утверждение из документа <em>brand/01-positioning.md</em> вынесено отдельной строкой. Отметьте <b>Согласен</b>, если подписываетесь под формулировкой как есть. <b>Обсудить</b> — если есть сомнение или правка; комментарий не обязателен, но помогает.</p>
+    <h1>Позиционирование: голосуем втроём</h1>
+    <p class="sub">Школа английского языка Ольги Карпенко. Каждое утверждение из <em>brand/01-positioning.md</em> — отдельной строкой. Выберите, кто отвечает, и отметьте: <b>Согласен</b> — берём как есть, <b>Обсудить</b> — есть сомнение или правка. Ответы каждого хранятся отдельно; рядом с утверждением видно, как ответили остальные.</p>
+    <div class="who" role="group" aria-label="Кто отвечает">
+      <span class="lbl">Кто отвечает</span>
+      <button type="button" data-p="gosha" aria-pressed="false">Гоша</button>
+      <button type="button" data-p="olga" aria-pressed="false">Ольга</button>
+      <button type="button" data-p="sergey" aria-pressed="false">Сергей</button>
+      <span class="hint" id="whohint">Выберите себя. Если голосуете вместе на созвоне — переключайте по очереди, ответы не смешаются.</span>
+    </div>
     <div class="legend">
-      <span><b>Согласен</b> — берём в работу без изменений</span>
+      <span><b>Согласен</b> — в работу без изменений</span>
       <span><b>Обсудить</b> — разберём отдельно</span>
-      <span>Не отмечено — ещё не смотрели</span>
+      <span><b>Единогласно</b> — все трое согласны</span>
     </div>
   </header>
 
@@ -79,18 +100,21 @@
     <div class="filters" role="group" aria-label="Фильтр">
       <button type="button" data-f="all" aria-pressed="true">Все</button>
       <button type="button" data-f="none" aria-pressed="false">Не отмечено</button>
-      <button type="button" data-f="ok" aria-pressed="false">Согласен</button>
       <button type="button" data-f="talk" aria-pressed="false">Обсудить</button>
+      <button type="button" data-f="split" aria-pressed="false">Разногласия</button>
+      <button type="button" data-f="agree" aria-pressed="false">Единогласно</button>
     </div>
-    <div class="save" id="save">Загрузка сохранённых отметок…</div>
+    <div class="save" id="save">Загрузка…</div>
   </div></div>
 
   <main id="groups"></main>
 
-  <footer>Отметки сохраняются автоматически и видны Гоше в рабочей сессии. Версия документа: позиционирование v1 от 18.09.2026.</footer>
+  <footer>Ответы сохраняются автоматически, по человеку, и попадают в рабочие материалы бренда. Позиционирование v1 от 18.09.2026.</footer>
 </div>
 
 <script>
+const PEOPLE = { gosha:"Гоша", olga:"Ольга", sergey:"Сергей" };
+const PIDS = Object.keys(PEOPLE);
 const GROUPS = [
   { key:"A", title:"Решения и допущения", lead:"То, на чём построен весь документ. Если здесь «обсудить» — остальное тоже сдвинется.", items:[
     ["A1","Имя бренда — <q>Школа английского языка Ольги Карпенко</q>. Fair Winds остаётся в домене, юрлице и истории до отдельного решения по архитектуре бренда."],
@@ -154,17 +178,51 @@ const GROUPS = [
     ["R7","Амбиция на 5 лет не сформулирована. Без неё позиционирование защищает то, что есть, а не ведёт туда, куда школа хочет."],
   ]},
 ];
+const ALL_IDS = GROUPS.flatMap(g => g.items.map(i => i[0]));
+const LEGACY_DOC = "review/positioning-v1";      // одиночная версия страницы — переносится в голос Гоши
+const LS_WHO = "positioning-review-who", LS_PREFIX = "positioning-review-votes-";
 
-const DOC_PATH = "review/positioning-v1";
-const LS_KEY = "positioning-review-v1";
-let state = { items: {} };           // id -> {status:'ok'|'talk'|'none', comment:''}
+let who = null;                                     // 'gosha' | 'olga' | 'sergey'
+let votes = { gosha:{items:{}}, olga:{items:{}}, sergey:{items:{}} };
 let filter = "all";
-let db = null, saving = null, pending = false, dbUnavailable = false;
+let db = null, dbUnavailable = false, saving = null, pending = false, timer = null;
 
 const $ = s => document.querySelector(s);
-const groupsEl = $("#groups"), countEl = $("#count"), saveEl = $("#save");
+const groupsEl = $("#groups"), countEl = $("#count"), saveEl = $("#save"), whoEl = $(".who"), hintEl = $("#whohint");
 
-function get(id){ return state.items[id] || { status:"none", comment:"" }; }
+const vote = (p, id) => (votes[p] && votes[p].items && votes[p].items[id]) || { status:"none", comment:"" };
+const mine = id => who ? vote(who, id) : { status:"none", comment:"" };
+function esc(s){ return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;"); }
+
+function verdict(id){                               // 'agree' | 'split' | 'talk' | 'partial' | 'none'
+  const st = PIDS.map(p => vote(p, id).status);
+  const voted = st.filter(s => s !== "none");
+  if (!voted.length) return "none";
+  if (voted.length === 3 && voted.every(s => s === "ok")) return "agree";
+  if (voted.some(s => s === "talk")) return "talk";
+  return voted.length === 3 ? "agree" : "partial";
+}
+function passes(id){
+  const s = mine(id).status, v = verdict(id);
+  if (filter === "all") return true;
+  if (filter === "none") return s === "none";
+  if (filter === "talk") return s === "talk" || v === "talk";
+  if (filter === "split"){ const st = PIDS.map(p => vote(p,id).status).filter(x => x!=="none"); return st.length > 1 && new Set(st).size > 1; }
+  if (filter === "agree") return v === "agree";
+  return true;
+}
+
+function othersHtml(id){
+  return PIDS.map(p => {
+    const v = vote(p, id); const t = v.comment ? ` title="${esc(v.comment)}"` : "";
+    const mark = v.status === "ok" ? "✓" : v.status === "talk" ? "?" : "—";
+    return `<span class="pill ${v.status}"${t}>${PEOPLE[p]} ${mark}</span>`;
+  }).join("") + (verdict(id) === "agree" ? `<span class="pill all">единогласно</span>` : "");
+}
+function ocommentsHtml(id){
+  const rows = PIDS.filter(p => p !== who && vote(p,id).comment).map(p => `<span><b>${PEOPLE[p]}:</b> ${esc(vote(p,id).comment)}</span>`);
+  return rows.length ? `<div class="ocomment">${rows.join("")}</div>` : "";
+}
 
 function render(){
   groupsEl.innerHTML = "";
@@ -173,107 +231,121 @@ function render(){
     sec.innerHTML = `<h2>${g.title}</h2><p class="lead">${g.lead}</p><div class="items"></div>`;
     const list = sec.querySelector(".items");
     for (const [id, html] of g.items){
-      const st = get(id);
+      const st = mine(id);
       const el = document.createElement("article");
-      el.className = "item"; el.dataset.status = st.status; el.dataset.id = id;
-      el.hidden = filter !== "all" && st.status !== filter;
+      el.className = "item"; el.dataset.status = st.status; el.dataset.id = id; el.hidden = !passes(id);
       el.innerHTML = `
-        <div class="id">${id}</div>
+        <div class="meta"><span class="id">${id}</span><span class="others">${othersHtml(id)}</span></div>
         <p class="text">${html}</p>
         <div class="row">
           <div class="choice" role="group" aria-label="Решение по ${id}">
-            <button type="button" class="ok" data-set="ok" aria-pressed="${st.status==="ok"}">✓ Согласен</button>
-            <button type="button" class="talk" data-set="talk" aria-pressed="${st.status==="talk"}">? Обсудить</button>
+            <button type="button" class="ok" data-set="ok" aria-pressed="${st.status==="ok"}" ${who?"":"disabled"}>✓ Согласен</button>
+            <button type="button" class="talk" data-set="talk" aria-pressed="${st.status==="talk"}" ${who?"":"disabled"}>? Обсудить</button>
           </div>
           <label class="comment"><span hidden>Комментарий к ${id}</span>
-            <input id="c-${id}" type="text" placeholder="Комментарий (по желанию)" value="${escapeAttr(st.comment)}" autocomplete="off">
+            <input id="c-${id}" type="text" placeholder="${who ? "Комментарий (по желанию)" : "Сначала выберите, кто отвечает"}" value="${esc(st.comment)}" autocomplete="off" ${who?"":"disabled"}>
           </label>
-        </div>`;
+        </div>
+        ${ocommentsHtml(id)}`;
       list.appendChild(el);
     }
     groupsEl.appendChild(sec);
   }
   renderCount();
 }
-function escapeAttr(s){ return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;"); }
-
+function refreshItem(id){
+  const el = groupsEl.querySelector(`[data-id="${id}"]`); if (!el) return;
+  const st = mine(id);
+  el.dataset.status = st.status;
+  el.querySelector('[data-set="ok"]').setAttribute("aria-pressed", st.status==="ok");
+  el.querySelector('[data-set="talk"]').setAttribute("aria-pressed", st.status==="talk");
+  el.querySelector(".others").innerHTML = othersHtml(id);
+  const oc = el.querySelector(".ocomment"); const nh = ocommentsHtml(id);
+  if (oc) oc.remove(); if (nh) el.insertAdjacentHTML("beforeend", nh);
+  el.hidden = !passes(id);
+}
 function renderCount(){
-  const all = GROUPS.flatMap(g => g.items.map(i => i[0]));
-  const n = { ok:0, talk:0, none:0 };
-  for (const id of all) n[get(id).status]++;
-  countEl.innerHTML = `<span><i class="dot ok"></i>Согласен ${n.ok}</span><span><i class="dot talk"></i>Обсудить ${n.talk}</span><span><i class="dot none"></i>Не отмечено ${n.none}</span><span>из ${all.length}</span>`;
+  const n = { ok:0, talk:0, none:0 }; let agree = 0, split = 0;
+  for (const id of ALL_IDS){ n[mine(id).status]++; if (verdict(id)==="agree") agree++; const st = PIDS.map(p=>vote(p,id).status).filter(x=>x!=="none"); if (st.length>1 && new Set(st).size>1) split++; }
+  countEl.innerHTML = (who ? `<span><i class="dot ok"></i>${PEOPLE[who]}: согласен ${n.ok}</span><span><i class="dot talk"></i>обсудить ${n.talk}</span><span><i class="dot none"></i>не отмечено ${n.none}</span>` : `<span>Выберите, кто отвечает</span>`)
+    + `<span><i class="dot agree"></i>единогласно ${agree}</span><span>разногласия ${split}</span><span>всего ${ALL_IDS.length}</span>`;
 }
 
 function setStatus(id, status){
-  const cur = get(id);
-  const next = cur.status === status ? "none" : status;   // second click clears
-  state.items[id] = { ...cur, status: next, updatedAt: new Date().toISOString() };
-  const el = groupsEl.querySelector(`[data-id="${id}"]`);
-  if (el){
-    el.dataset.status = next;
-    el.querySelector('[data-set="ok"]').setAttribute("aria-pressed", next==="ok");
-    el.querySelector('[data-set="talk"]').setAttribute("aria-pressed", next==="talk");
-    if (filter !== "all" && next !== filter) el.hidden = true;
-  }
-  renderCount(); schedule();
+  if (!who) return;
+  const cur = mine(id); const next = cur.status === status ? "none" : status;
+  votes[who].items[id] = { ...cur, status: next, updatedAt: new Date().toISOString() };
+  refreshItem(id); renderCount(); schedule();
 }
 function setComment(id, comment){
-  const cur = get(id);
-  if (cur.comment === comment) return;
-  state.items[id] = { ...cur, comment, updatedAt: new Date().toISOString() };
+  if (!who) return;
+  const cur = mine(id); if (cur.comment === comment) return;
+  votes[who].items[id] = { ...cur, comment, updatedAt: new Date().toISOString() };
   schedule();
 }
 
-// Save: one write at a time, coalesced.
-let timer = null;
 function schedule(){
-  try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch(e){}
+  try { localStorage.setItem(LS_PREFIX + who, JSON.stringify(votes[who])); } catch(e){}
   clearTimeout(timer); timer = setTimeout(flush, 700);
   saveEl.textContent = "Сохраняю…"; saveEl.className = "save";
 }
 async function flush(){
-  if (!db){ saveEl.textContent = dbUnavailable ? "Сохранение недоступно: отметки останутся только в этой вкладке." : "Сохраняю…"; if (dbUnavailable) saveEl.className="save warn"; return; }
+  if (!db){ if (dbUnavailable){ saveEl.textContent = "Сохранение недоступно: отметки останутся только в этой вкладке."; saveEl.className = "save warn"; } return; }
   if (saving){ pending = true; return; }
-  saving = db.doc(DOC_PATH).set({ items: state.items, updatedAt: new Date().toISOString(), version: "positioning-v1" });
-  try { await saving; saveEl.textContent = "Сохранено " + new Date().toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"}); saveEl.className="save"; }
-  catch(e){ saveEl.textContent = "Не удалось сохранить (" + (e && e.code || "ошибка") + "). Отметки остались в этой вкладке."; saveEl.className="save warn"; }
+  const p = who; if (!p) return;
+  saving = db.doc("votes/" + p).set({ person: p, items: votes[p].items, updatedAt: new Date().toISOString(), version: "positioning-v1" });
+  try { await saving; saveEl.textContent = `Сохранено за ${PEOPLE[p]} ` + new Date().toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"}); saveEl.className = "save"; }
+  catch(e){ saveEl.textContent = "Не удалось сохранить (" + (e && e.code || "ошибка") + "). Отметки остались в этой вкладке."; saveEl.className = "save warn"; }
   finally { saving = null; if (pending){ pending = false; flush(); } }
 }
 
-groupsEl.addEventListener("click", e => {
-  const b = e.target.closest("button[data-set]"); if (!b) return;
-  setStatus(b.closest(".item").dataset.id, b.dataset.set);
-});
-groupsEl.addEventListener("input", e => {
-  const inp = e.target.closest("input[id^='c-']"); if (!inp) return;
-  setComment(inp.closest(".item").dataset.id, inp.value);
-});
+function setWho(p){
+  who = p; try { localStorage.setItem(LS_WHO, p); } catch(e){}
+  for (const b of whoEl.querySelectorAll("button")) b.setAttribute("aria-pressed", b.dataset.p === p);
+  hintEl.textContent = `Отвечает ${PEOPLE[p]}. Отметки сохраняются отдельно от других.`;
+  render();
+}
+
+whoEl.addEventListener("click", e => { const b = e.target.closest("button[data-p]"); if (b) setWho(b.dataset.p); });
+groupsEl.addEventListener("click", e => { const b = e.target.closest("button[data-set]"); if (!b || b.disabled) return; setStatus(b.closest(".item").dataset.id, b.dataset.set); });
+groupsEl.addEventListener("input", e => { const inp = e.target.closest("input[id^='c-']"); if (!inp) return; setComment(inp.closest(".item").dataset.id, inp.value); });
 $(".filters").addEventListener("click", e => {
   const b = e.target.closest("button[data-f]"); if (!b) return;
   filter = b.dataset.f;
   for (const x of $(".filters").children) x.setAttribute("aria-pressed", x === b);
-  for (const el of groupsEl.querySelectorAll(".item")) el.hidden = filter !== "all" && el.dataset.status !== filter;
+  for (const it of groupsEl.querySelectorAll(".item")) it.hidden = !passes(it.dataset.id);
 });
 
-// Boot: render immediately from local copy, then reconcile with db.
-try { const raw = localStorage.getItem(LS_KEY); if (raw) state = JSON.parse(raw) || state; if (!state.items) state.items = {}; } catch(e){}
-render();
+// Boot: local copies first, then the shared store.
+try { for (const p of PIDS){ const raw = localStorage.getItem(LS_PREFIX + p); if (raw){ const v = JSON.parse(raw); if (v && v.items) votes[p] = v; } } } catch(e){}
+try { const w = localStorage.getItem(LS_WHO); if (w && PEOPLE[w]) who = w; } catch(e){}
+if (who) setWho(who); else render();
+
+function mergeRemote(p, remote){
+  const merged = { ...(remote.items || {}) };
+  for (const [id, v] of Object.entries(votes[p].items || {})) if (!merged[id] || (v.updatedAt||"") > (merged[id].updatedAt||"")) merged[id] = v;
+  votes[p] = { items: merged };
+}
 
 (async () => {
   db = window.claude && window.claude.use ? await window.claude.use("db") : null;
   if (!db){ dbUnavailable = true; saveEl.textContent = "Сохранение недоступно: отметки останутся только в этой вкладке."; saveEl.className = "save warn"; return; }
   try {
-    const snap = await db.doc(DOC_PATH).get();
-    if (snap.exists){
-      const remote = snap.data();
-      const merged = { ...(remote.items||{}) };
-      for (const [id, v] of Object.entries(state.items||{})){       // local wins only if newer
-        if (!merged[id] || (v.updatedAt||"") > (merged[id].updatedAt||"")) merged[id] = v;
-      }
-      state.items = merged; render();
-      saveEl.textContent = "Загружено сохранённое" + (remote.updatedAt ? " от " + new Date(remote.updatedAt).toLocaleString("ru-RU",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"}) : "");
-    } else {
-      saveEl.textContent = "Ничего ещё не отмечено. Отметки сохраняются автоматически.";
+    // Перенос отметок с одиночной версии страницы в голос Гоши (один раз).
+    const [legacy, g] = await Promise.all([db.doc(LEGACY_DOC).get(), db.doc("votes/gosha").get()]);
+    if (legacy.exists && !g.exists){
+      await db.doc("votes/gosha").set({ person:"gosha", items: legacy.data().items || {}, updatedAt: new Date().toISOString(), version:"positioning-v1", migratedFrom: LEGACY_DOC });
+    }
+    saveEl.textContent = "Ответы синхронизируются между всеми, кто открыл страницу.";
+    for (const p of PIDS){
+      db.doc("votes/" + p).onSnapshot(snap => {
+        if (!snap.exists) return;
+        if (p === who && snap.metadata.hasPendingWrites) return;      // своя же незавершённая запись
+        mergeRemote(p, snap.data());
+        for (const id of ALL_IDS) refreshItem(id);
+        renderCount();
+        if (p === who){ for (const id of ALL_IDS){ const inp = document.getElementById("c-"+id); if (inp && document.activeElement !== inp) inp.value = mine(id).comment || ""; } }
+      }, err => { saveEl.textContent = "Связь с хранилищем потеряна (" + (err && err.code || "ошибка") + "). Обновите страницу."; saveEl.className = "save warn"; });
     }
   } catch(e){ saveEl.textContent = "Не удалось загрузить сохранённое (" + (e && e.code || "ошибка") + ")."; saveEl.className = "save warn"; }
 })();
