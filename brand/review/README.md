@@ -12,18 +12,29 @@ F (доказательства), G (отказы), H (одно предложе
 |---|---|---|
 | **Google Таблица** | [Позиционирование — голосование](https://docs.google.com/spreadsheets/d/1dS26-dA3FWRgaCVZa9gs_a3RWacxm-U8otz9fvMF89g/edit) | Основной. Три колонки рядом, видно разногласия, правится в любой момент |
 | **Страница-чеклист** | https://claude.ai/artifact/WWMyQZnmaiWkH1JPDfD4MP | Удобнее на телефоне, но открывается только у участников организации Claude |
-| **Google Форма** | собирается скриптом `google-voting.gs` | Если хочется привычной анкеты с разделами и прогресс-баром |
+| **Google Форма** | [Позиционирование — анкета](https://docs.google.com/forms/d/e/1FAIpQLSeY3bZR5kBnWlSNRYtZMuDoXdLMkuzjQZOTJjtXgoN3fXH59g/viewform) | Привычная анкета: 9 разделов, прогресс-бар, сетка «да / обсудить». Ответы падают в ту же таблицу отдельным листом |
 
 Все три ведут к одному результату: три набора ответов, по одному на человека.
 
 ## Файлы
 
 - `positioning-votes.csv` — исходник таблицы, из него она и залита. Если правится текст утверждений, пересобирается отсюда.
-- `google-voting.gs` — скрипт Google Apps Script с двумя функциями:
+- `google-voting.gs` — скрипт Google Apps Script с двумя функциями (резервная копия; рабочая версия уже залита в проект «Голосование по позиционированию — сборка формы» в Apps Script):
   - `оформитьТаблицу()` — выпадающие списки «да / обсудить», цвета, закреплённая шапка, колонка «Итог» (единогласно / обсудить);
   - `создатьФорму()` — собирает Google Форму: девять разделов, в каждом сетка и поле для комментариев.
   Запускается один раз на [script.google.com](https://script.google.com): новый проект → вставить файл → выбрать функцию → «Выполнить».
 - `positioning-review.html` — исходник страницы-чеклиста, опубликованной как артефакт.
+
+## Адреса
+
+| Что | Где |
+|---|---|
+| Таблица голосования и ответов формы | `1dS26-dA3FWRgaCVZa9gs_a3RWacxm-U8otz9fvMF89g` |
+| Форма (заполнение) | [viewform](https://docs.google.com/forms/d/e/1FAIpQLSeY3bZR5kBnWlSNRYtZMuDoXdLMkuzjQZOTJjtXgoN3fXH59g/viewform) |
+| Форма (редактирование) | [правка](https://docs.google.com/forms/d/1QN2V4rQtgMCQIzejQud13DBhCe_oeWGK8sEGz7fI8EU/edit) |
+| Проект Apps Script | `1N4K_FqVkmdPsLYyM48FjF2ls_jdAU5_I2CWErbBK2hZRFu0Qo9yp6nyt` |
+
+Всё в аккаунте georgekarpenko@gmail.com.
 
 ## Что потом
 
